@@ -23,7 +23,7 @@ public class BoardGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tileMap = new Tile[Board_Size_x, Board_Size_y];
+        //MakeBoard();
     }
 
     // Update is called once per frame
@@ -34,6 +34,7 @@ public class BoardGenerator : MonoBehaviour
 
     public void MakeBoard()
     {
+        tileMap = new Tile[Board_Size_x, Board_Size_y];
         for (int y = 0; y < Board_Size_y; y++)
         {
             //Create Offset for 8*8 board specifically
@@ -42,7 +43,7 @@ public class BoardGenerator : MonoBehaviour
             {
                 //Generate the tile
                 GameObject newTile = Instantiate(TilePrefab,transform);
-                Debug.Log(newTile);
+                //Debug.Log(newTile);
 
                 //Position
                 newTile.GetComponent<RectTransform>().anchoredPosition = new Vector2( x * 100 + 50 - Board_Size_x / 2 * 100, y * 100 + 50 - Board_Size_y / 2 * 100);

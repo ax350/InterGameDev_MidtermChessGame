@@ -44,7 +44,7 @@ public class UnitManager : MonoBehaviour
             //Get the type of Unit here
             //For now it will all be basic chess piece
 
-            Unit newUnit = Instantiate(UnitPrefab);
+            Unit newUnit = Instantiate(UnitPrefab,transform);
             newUnit.SetupUnit(teamColor);
             
             newUnits.Add(newUnit);
@@ -60,11 +60,12 @@ public class UnitManager : MonoBehaviour
         {
             if (i < 8)
             {
+                Debug.Log(i);
                 Units[i].PlaceSelf(Board.tileMap[i, StartRow]);
             }
             else
             {
-                Units[i - 8].PlaceSelf(Board.tileMap[i, EndRow]);
+                Units[i].PlaceSelf(Board.tileMap[i - 8, EndRow]);
             }
         }
     }

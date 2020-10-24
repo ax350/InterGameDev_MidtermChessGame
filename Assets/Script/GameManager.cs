@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        /*
         if (singleton == null)
         {
             singleton = this;
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
         {
             DontDestroyOnLoad(singleton);
         }
+        */
 
         gameBoard.MakeBoard();
         gameUnitManager.SetupPieces(gameBoard);
