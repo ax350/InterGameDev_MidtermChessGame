@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public abstract class Unit : EventTrigger
 {
@@ -30,6 +31,7 @@ public abstract class Unit : EventTrigger
         //PieceManager
 
         pColor = TeamColor;
+        GetComponent<Image>().color = pColor;
     }
 
     public void PlaceSelf(Tile initialTile)
