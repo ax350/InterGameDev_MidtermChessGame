@@ -261,10 +261,10 @@ RectTransform:
   m_Father: {fileID: 1142330070}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: -800, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1056694182
 MonoBehaviour:
@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 408f1a3ce19586648b86ac97bb76cb4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitPrefab: {fileID: 5422650546433538528, guid: dc71240eaddf13148b3a4de1b2186dcf,
+  UnitPrefab: {fileID: 5422650546433538532, guid: dc71240eaddf13148b3a4de1b2186dcf,
     type: 3}
   availableUnits:
   - {fileID: 0}

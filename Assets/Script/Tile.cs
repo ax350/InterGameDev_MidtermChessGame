@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tile : MonoBehaviour
 {
-    public Vector2 onBoardPosition;
+    public Vector2Int onBoardPosition;
     public BoardGenerator Board;
 
     public Unit currentUnit = null;
+
+    public Image UnitMoveMask;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +24,7 @@ public class Tile : MonoBehaviour
         
     }
 
-    public void Setup(Vector2 setPosition, BoardGenerator setBoard)
+    public void Setup(Vector2Int setPosition, BoardGenerator setBoard)
     {
         onBoardPosition = setPosition;
         Board = setBoard;

@@ -17,6 +17,7 @@ public class BoardGenerator : MonoBehaviour
     //public GameObject TilePrefab;
     #endregion
 
+    //[HideInInspector]
     public Tile[,] tileMap;
 
 

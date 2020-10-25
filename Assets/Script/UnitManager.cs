@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
-    public Unit UnitPrefab;
+    public GameObject UnitPrefab;
 
     private List<Unit> whiteUnits = null;
     private List<Unit> blackUnits = null;
@@ -44,10 +45,12 @@ public class UnitManager : MonoBehaviour
             //Get the type of Unit here
             //For now it will all be basic chess piece
 
-            Unit newUnit = Instantiate(UnitPrefab,transform);
-            newUnit.SetupUnit(teamColor);
+            GameObject newUnit = Instantiate(UnitPrefab,transform);
+
+            Unit newU = (Unit)newUnit.AddComponent(typeof(Pawn));
+            newU.SetupUnit(teamColor);
             
-            newUnits.Add(newUnit);
+            newUnits.Add(newU);
 
         }
         return newUnits;
@@ -60,7 +63,7 @@ public class UnitManager : MonoBehaviour
         {
             if (i < 8)
             {
-                Debug.Log(i);
+                Debug.Log(i+" "+ Units[i].GetType());
                 Units[i].PlaceSelf(Board.tileMap[i, StartRow]);
             }
             else
