@@ -5,6 +5,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum tileStatus
+{
+    Idle,
+    Empty,
+    Occupied_by_friendly,
+    Occupied_by_enemy,
+    OutOfBounds
+}
+
 public class BoardGenerator : MonoBehaviour
 {
     #region Create Board
@@ -68,4 +77,34 @@ public class BoardGenerator : MonoBehaviour
             }
         }
     }
+
+    public tileStatus CheckAvailability(int xPos, int yPos, Unit callingUnit)
+    {
+        if (xPos < 0 || xPos >= Board_Size_x)
+        {
+            return tileStatus.OutOfBounds;
+        }
+
+        if (yPos < 0 || yPos >= Board_Size_y)
+        {
+            return tileStatus.OutOfBounds;
+        }
+
+        Tile targetTile = tileMap[xPos, yPos];
+
+        if (targetTile.currentUnit != null)
+        {
+            if (targetTile.currentUnit.unitFaction == callingUnit.unitFaction)
+            {
+                return tileStatus.Occupied_by_friendly;
+            }
+            if (targetTile.currentUnit.unitFaction != callingUnit.unitFaction)
+            {
+                return tileStatus.Occupied_by_enemy;
+            }
+        }
+
+        return tileStatus.Empty;
+    }
+
 }

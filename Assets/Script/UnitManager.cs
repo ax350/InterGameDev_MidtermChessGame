@@ -10,6 +10,9 @@ public class UnitManager : MonoBehaviour
     private List<Unit> whiteUnits = null;
     private List<Unit> blackUnits = null;
 
+    public Boolean winState = false;
+    public Boolean bonusState = false;
+
     //There will be a unit selection later, current 16 is the chess numbers
     int tmpUnitnumbers = 16;
     public Unit[] availableUnits = new Unit[16];
@@ -28,15 +31,17 @@ public class UnitManager : MonoBehaviour
 
     public void SetupPieces(BoardGenerator Board)
     {
-        whiteUnits = CreateUnits(Color.white);
-        blackUnits = CreateUnits(Color.black);
+        whiteUnits = CreateUnits(Color.white, faction.white);
+        blackUnits = CreateUnits(Color.black, faction.black);
 
         PlaceUnits(1, 0, whiteUnits, Board);
         PlaceUnits(6, 7, blackUnits, Board);
 
+        //Replace with enum later
+        ChangeInteractivity(blackUnits, false);
     }
 
-    private List<Unit> CreateUnits(Color teamColor)
+    private List<Unit> CreateUnits(Color teamColor, faction unitFaction)
     {
         List<Unit> newUnits = new List<Unit>();
 
@@ -48,7 +53,7 @@ public class UnitManager : MonoBehaviour
             GameObject newUnit = Instantiate(UnitPrefab,transform);
 
             Unit newU = (Unit)newUnit.AddComponent(typeof(Pawn));
-            newU.SetupUnit(teamColor);
+            newU.SetupUnit(teamColor, unitFaction, this);
             
             newUnits.Add(newU);
 
@@ -70,6 +75,31 @@ public class UnitManager : MonoBehaviour
             {
                 Units[i].placeSelf(Board.tileMap[i - 8, EndRow]);
             }
+        }
+    }
+
+    public void SwitchTurn(faction unitFaction)
+    {
+        //There will be battle among three or more factions, prepare an enum list for this later
+        bool blackTurn;
+        //bool whiteTurn;
+        if (unitFaction == faction.white)
+        {
+            blackTurn = true;
+        }
+        else
+        {
+            blackTurn = false;
+        }
+
+        ChangeInteractivity(whiteUnits, !blackTurn);
+        ChangeInteractivity(blackUnits, blackTurn);
+    }
+    private void ChangeInteractivity(List<Unit> allFactionUnit, bool boolean)
+    {
+        foreach (Unit unit in allFactionUnit)
+        {
+            unit.enabled = boolean;
         }
     }
 

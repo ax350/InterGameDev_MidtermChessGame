@@ -18,9 +18,9 @@ public class Pawn : Unit
         
     }
 
-    public override void SetupUnit(Color TeamColor)
+    public override void SetupUnit(Color TeamColor, faction faction, UnitManager assignedUnitManager)
     {
-        base.SetupUnit(TeamColor);
+        base.SetupUnit(TeamColor,faction, assignedUnitManager);
         Debug.Log("111");
         GetComponent<Image>().useSpriteMesh = true;
         GetComponent<Image>().sprite = Resources.Load<Sprite>("Circle") as Sprite;

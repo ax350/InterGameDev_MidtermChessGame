@@ -17,9 +17,9 @@ public class BasicUnit : Unit
         
     }
 
-    public override void SetupUnit(Color TeamColor)
+    public override void SetupUnit(Color TeamColor, faction faction, UnitManager assignedUnitManager)
     {
-        base.SetupUnit(TeamColor);
+        base.SetupUnit(TeamColor, faction, assignedUnitManager);
 
         GetComponent<Image>().sprite = Resources.Load<Sprite>("Square");
     }

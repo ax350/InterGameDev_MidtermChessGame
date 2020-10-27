@@ -13,6 +13,10 @@ public class Tile : MonoBehaviour
 
     public Image UnitMoveMask;
 
+    //Not efficient, I should expect more states as the game develops
+    //public Boolean occupied = false;
+    //Note: Use enum
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,4 +44,6 @@ public class Tile : MonoBehaviour
             currentUnit.remove();
         }
     }
+
+    
 }

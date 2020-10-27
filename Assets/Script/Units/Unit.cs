@@ -5,15 +5,26 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+//add enum to this later, there will be different factions
+//you know what fuck this, I'm adding this now
+public enum faction
+{ 
+    white,
+    black,
+    thrid_party
+}
+
 public abstract class Unit : EventTrigger
 {
-    //PieceManager
+    //UnitManager here
+    UnitManager unitManager;
 
     private Tile originalTile = null;
     private Tile currentTile = null;
     private Tile targetTile = null;
 
     public Color pColor = Color.blue;
+    public faction unitFaction;
 
     //Go-to-able tiles
     //This is for the distance of movement
@@ -34,12 +45,14 @@ public abstract class Unit : EventTrigger
         
     }
 
-    public virtual void SetupUnit(Color TeamColor)
+    public virtual void SetupUnit(Color TeamColor, faction faction, UnitManager assignedUnitManager)
     {
-        //PieceManager
+        //UnitManager here
+        unitManager = assignedUnitManager;
 
         pColor = TeamColor;
         GetComponent<Image>().color = pColor;
+        unitFaction = faction;
     }
 
     public void placeSelf(Tile initialTile)
@@ -82,6 +95,20 @@ public abstract class Unit : EventTrigger
             tile_Ypos += yDir;
 
             //TODO: Check if the cell is occupied
+            //Working on it
+            tileStatus tileStatus = tileStatus.Idle;
+            tileStatus = currentTile.Board.CheckAvailability(tile_Xpos, tile_Ypos, this);
+
+            if (tileStatus == tileStatus.Occupied_by_enemy)
+            {
+                movableTiles.Add(currentTile.Board.tileMap[tile_Xpos, tile_Ypos]);
+                break;
+            }
+
+            if (tileStatus != tileStatus.Empty)
+            {
+                break;
+            }
 
             movableTiles.Add(currentTile.Board.tileMap[tile_Xpos,tile_Ypos]);
         }
@@ -167,6 +194,8 @@ public abstract class Unit : EventTrigger
         }
 
         moveUnit();
+
+        unitManager.SwitchTurn(unitFaction);
     }
     #endregion
 }
