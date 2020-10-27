@@ -64,11 +64,11 @@ public class UnitManager : MonoBehaviour
             if (i < 8)
             {
                 Debug.Log(i+" "+ Units[i].GetType());
-                Units[i].PlaceSelf(Board.tileMap[i, StartRow]);
+                Units[i].placeSelf(Board.tileMap[i, StartRow]);
             }
             else
             {
-                Units[i].PlaceSelf(Board.tileMap[i - 8, EndRow]);
+                Units[i].placeSelf(Board.tileMap[i - 8, EndRow]);
             }
         }
     }

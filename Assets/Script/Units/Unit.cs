@@ -11,6 +11,7 @@ public abstract class Unit : EventTrigger
 
     private Tile originalTile = null;
     private Tile currentTile = null;
+    private Tile targetTile = null;
 
     public Color pColor = Color.blue;
 
@@ -41,13 +42,14 @@ public abstract class Unit : EventTrigger
         GetComponent<Image>().color = pColor;
     }
 
-    public void PlaceSelf(Tile initialTile)
+    public void placeSelf(Tile initialTile)
     {
         currentTile = initialTile;
         originalTile = initialTile;
         currentTile.currentUnit = this;
 
         transform.position = currentTile.transform.position;
+        Debug.Log(transform.position);
     }
 
     public virtual void remove()
@@ -57,6 +59,12 @@ public abstract class Unit : EventTrigger
         //Add: Play animation
         
         gameObject.SetActive(false);
+    }
+
+    public void resetSelf()
+    {
+        remove();
+        placeSelf(originalTile);
     }
 
     public void FindMovableTiles(int xDir, int yDir, int distance)
@@ -104,6 +112,18 @@ public abstract class Unit : EventTrigger
         movableTiles.Clear();
     }
 
+    protected virtual void moveUnit()
+    {
+        Debug.Log("Is moving Unit!");
+        //Swap the target tile to the current tile
+        targetTile.KillPiece();
+        currentTile.currentUnit = null;
+        currentTile = targetTile;
+        currentTile.currentUnit = this;
+        transform.position = currentTile.transform.position;
+        targetTile = null;
+    }
+
     #region DragEvent
     public override void OnBeginDrag(PointerEventData eventData)
     {
@@ -116,9 +136,22 @@ public abstract class Unit : EventTrigger
     public override void OnDrag(PointerEventData eventData)
     {
         base.OnDrag(eventData);
-        Debug.Log(transform.position);
+        //Debug.Log(transform.position);
         transform.position += (Vector3)eventData.delta;
-        Debug.Log(transform.position);
+
+        foreach (Tile tmptile in movableTiles)
+        {
+            Debug.Log(tmptile.tileRectTransform);
+            Debug.Log(Input.mousePosition);
+            if (RectTransformUtility.RectangleContainsScreenPoint(tmptile.tileRectTransform, Input.mousePosition))
+            {
+                targetTile = tmptile;
+                break;
+            }
+            targetTile = null;
+        }
+
+        //Debug.Log(transform.position);
     }
 
     public override void OnEndDrag(PointerEventData eventData)
@@ -126,6 +159,14 @@ public abstract class Unit : EventTrigger
         base.OnEndDrag(eventData);
 
         ClearAllMovableTiles();
+
+        if (targetTile == null)
+        {
+            transform.position = currentTile.transform.position;
+            return;
+        }
+
+        moveUnit();
     }
     #endregion
 }

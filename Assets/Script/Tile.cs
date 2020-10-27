@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Tile : MonoBehaviour
 {
     public Vector2Int onBoardPosition;
+    public RectTransform tileRectTransform;
     public BoardGenerator Board;
 
     public Unit currentUnit = null;
@@ -28,6 +29,7 @@ public class Tile : MonoBehaviour
     {
         onBoardPosition = setPosition;
         Board = setBoard;
+        tileRectTransform = GetComponent<RectTransform>();
         Debug.Log(onBoardPosition);
     }
 
