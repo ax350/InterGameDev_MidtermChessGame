@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onBoardPosition: {x: 0, y: 0}
+  tileRectTransform: {fileID: 0}
   Board: {fileID: 0}
   currentUnit: {fileID: 0}
   UnitMoveMask: {fileID: 5950024894101408808}

@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,21 +18,22 @@ public enum faction
 public abstract class Unit : EventTrigger
 {
     //UnitManager here
-    UnitManager unitManager;
+    protected UnitManager unitManager;
 
-    private Tile originalTile = null;
-    private Tile currentTile = null;
-    private Tile targetTile = null;
+    protected Tile originalTile = null;
+    protected Tile currentTile = null;
+    protected Tile targetTile = null;
 
     public Color pColor = Color.blue;
     public faction unitFaction;
 
+    protected Boolean isFirstMove = true;
+
     //Go-to-able tiles
     //This is for the distance of movement
-    private Vector3Int movableDistance = Vector3Int.one;
+    protected Vector3Int movableDistance = Vector3Int.one;
     //This is the list of all the tiles that this unit can go to
-    private List<Tile> movableTiles = new List<Tile>();
-
+    protected List<Tile> movableTiles = new List<Tile>();
 
     // Start is called before the first frame update
     void Start()
@@ -51,12 +53,14 @@ public abstract class Unit : EventTrigger
         unitManager = assignedUnitManager;
 
         pColor = TeamColor;
-        GetComponent<Image>().color = pColor;
+        //GetComponent<Image>().color = pColor;
         unitFaction = faction;
     }
 
     public void placeSelf(Tile initialTile)
     {
+        gameObject.SetActive(true);
+
         currentTile = initialTile;
         originalTile = initialTile;
         currentTile.currentUnit = this;
@@ -78,9 +82,10 @@ public abstract class Unit : EventTrigger
     {
         remove();
         placeSelf(originalTile);
+        isFirstMove = true;
     }
 
-    public void FindMovableTiles(int xDir, int yDir, int distance)
+    public virtual void FindMovableTiles(int xDir, int yDir, int distance)
     {
         //this first gets the current xy pos of the tile this unit is on
         //then it will be used to check all the tile this unit can move to
@@ -114,12 +119,16 @@ public abstract class Unit : EventTrigger
         }
     }
 
-    void FindAllMoveableTiles()
+    public virtual void FindAllMoveableTiles()
     {
         FindMovableTiles(1, 0, movableDistance.x);
         FindMovableTiles(-1, 0, movableDistance.x);
         FindMovableTiles(0, 1, movableDistance.y);
         FindMovableTiles(0, -1, movableDistance.y);
+        FindMovableTiles(1, 1, movableDistance.z);
+        FindMovableTiles(-1, 1, movableDistance.z);
+        FindMovableTiles(-1, -1, movableDistance.z);
+        FindMovableTiles(1, -1, movableDistance.z);
     }
 
     void MaskMovableTiles()
@@ -141,6 +150,7 @@ public abstract class Unit : EventTrigger
 
     protected virtual void moveUnit()
     {
+        isFirstMove = false;
         Debug.Log("Is moving Unit!");
         //Swap the target tile to the current tile
         targetTile.KillPiece();
@@ -158,6 +168,8 @@ public abstract class Unit : EventTrigger
 
         FindAllMoveableTiles();
         MaskMovableTiles();
+
+        SoundManager.soundManager.PlayAudio("Chess_pop");
     }
 
     public override void OnDrag(PointerEventData eventData)
@@ -194,6 +206,8 @@ public abstract class Unit : EventTrigger
         }
 
         moveUnit();
+
+        SoundManager.soundManager.PlayAudio("Chess_pop");
 
         unitManager.SwitchTurn(unitFaction);
     }

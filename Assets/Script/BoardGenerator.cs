@@ -74,8 +74,14 @@ public class BoardGenerator : MonoBehaviour
                 //Tile Property Setup
                 tileMap[x, y] = newTile.GetComponent<Tile>();
                 tileMap[x, y].Setup(new Vector2Int(x, y), this);
+
+                //Pause and play sound effect Not working right now
+                //SoundManager.soundManager.PlayAudio("bubble_pop");
+                //GameManager.singleton.DoWait(1f);
+                //Debug.Log(GameManager.singleton.gameBoard);
             }
         }
+        SoundManager.soundManager.PlayAudio("bubble_pop");
     }
 
     public tileStatus CheckAvailability(int xPos, int yPos, Unit callingUnit)

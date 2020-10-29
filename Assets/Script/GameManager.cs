@@ -7,9 +7,12 @@ public class GameManager : MonoBehaviour
     public static GameManager singleton;
     public BoardGenerator gameBoard;
     public UnitManager gameUnitManager;
+    public SoundManager gameSoundManager;
+
     // Start is called before the first frame update
     void Start()
     {
+        singleton = this;
         /*
         if (singleton == null)
         {
@@ -20,9 +23,9 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(singleton);
         }
         */
-
+        gameSoundManager.SetupSoundManager();
         gameBoard.MakeBoard();
-        gameUnitManager.SetupPieces(gameBoard);
+        gameUnitManager.SetupUnits(gameBoard);
 
     }
 
@@ -30,5 +33,15 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+    
+    public void DoWait(float time)
+    {
+        StartCoroutine(Wait(time));
+    }
+
+    public IEnumerator Wait(float time)
+    {
+        yield return new WaitForSeconds(time);
     }
 }
